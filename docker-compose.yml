@@ -20,6 +20,7 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
 
   dmt-backend:
+    container_name: dmt-backend
     build:
       dockerfile: ./Dockerfile
     environment:
