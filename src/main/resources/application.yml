@@ -1,0 +1,9 @@
+server:
+  port: ${PORT}
+
+spring:
+  application:
+    name: demo_dmt
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
