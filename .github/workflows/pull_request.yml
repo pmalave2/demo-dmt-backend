@@ -14,16 +14,24 @@ jobs:
       - name: Building JAR
         run: |
           mvn clean install
-
+      - name: Uploading JAR
+        uses: actions/upload-artifact@v3
+        with:
+          name: dmt-backend-jar
+          path: target/dmt-backend.jar
+          retention-days: 2
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - name: Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Downloading JAR
+        uses: actions/download-artifact@v3
+        with:
+          name: dmt-backend-jar
       - name: deploying to DEV
         run: |
           az extension add --name spring -y
@@ -32,4 +40,4 @@ jobs:
             --service ${{ vars.APP_SERVICE_NAME }} \
             --name ${{ vars.APP_NAME }} \
             --deployment develop \
-            --artifact-path target/dmt-backend.jar
+            --artifact-path dmt-backend.jar
