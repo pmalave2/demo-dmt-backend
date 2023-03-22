@@ -12,7 +12,7 @@ jobs:
           java-version: '17'
       - name: Building JAR
         run: |
-          ./mvnw clean install
+          mvn clean install
 
   deploy:
     needs: [build]
