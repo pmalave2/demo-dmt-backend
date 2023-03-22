@@ -10,6 +10,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: maven
       - name: Building JAR
         run: |
           mvn clean install
@@ -25,6 +26,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: deploying to DEV
         run: |
+          az extension add --name spring -y
           az spring app deploy \
             --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
             --service ${{ vars.APP_SERVICE_NAME }} \
