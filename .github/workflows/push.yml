@@ -7,29 +7,39 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: maven
       - name: Building JAR
         run: |
-          ./mvnw clean install
-
+          mvn clean install
+      - name: Uploading JAR
+        uses: actions/upload-artifact@v3
+        with:
+          name: dmt-backend-jar
+          path: target/dmt-backend.jar
+          retention-days: 2
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - name: Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Downloading JAR
+        uses: actions/download-artifact@v3
+        with:
+          name: dmt-backend-jar
       - name: deploying to PROD
         run: |
+          az extension add --name spring -y
           az spring app deploy \
             --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
             --service ${{ vars.APP_SERVICE_NAME }} \
             --name ${{ vars.APP_NAME }} \
             --deployment prod \
-            --artifact-path target/dmt-backend.jar
+            --artifact-path dmt-backend.jar
