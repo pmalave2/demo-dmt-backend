@@ -43,7 +43,7 @@ public class RackController {
     return service.read();
   }
 
-  @PreAuthorize("hasAuthority('SCOPE_rack.put')")
+  @PreAuthorize("hasAuthority('SCOPE_rack.update')")
   @PutMapping(path = "/{id}")
   public RackDTO update(
       @PathVariable(required = true) String id, @RequestBody @Validated RackUpdateDTO dto)
