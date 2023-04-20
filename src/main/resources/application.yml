@@ -1,9 +1,13 @@
-# server:
-#   port: ${PORT}
-
 spring:
   application:
     name: demo_dmt
   data:
     mongodb:
       uri: ${MONGO_URI}
+  cloud:
+    azure:
+      active-directory:
+        enabled: true
+        credential:
+          client-id: ${AZ_AD_CLIENT_ID}
+        app-id-uri: ${AZ_AD_APP_ID}

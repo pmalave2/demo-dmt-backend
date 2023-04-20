@@ -7,3 +7,15 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:example@mongo:27017/
+  cloud:
+    azure:
+      active-directory:
+        enabled: true
+        credential:
+          client-id: 5e67821e-ac5d-4201-ab04-847c0eeb63a5
+        app-id-uri: api://5e67821e-ac5d-4201-ab04-847c0eeb63a5
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka

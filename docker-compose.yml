@@ -9,6 +9,12 @@ services:
     ports:
       - 27017:27017
 
+  eureka:
+    image: springcloud/eureka
+    restart: always
+    ports:
+      - 8761:8761
+
   mongo-express:
     image: mongo-express
     restart: always
@@ -24,9 +30,11 @@ services:
     build:
       dockerfile: ./Dockerfile
     environment:
-      - PORT=8082
       - MONGO_URI=mongodb://mongo:27017/testDB
+      - AZ_AD_CLIENT_ID=5e67821e-ac5d-4201-ab04-847c0eeb63a5
+      - AZ_AD_APP_ID=api://5e67821e-ac5d-4201-ab04-847c0eeb63a5
     ports:
-      - 8082:8082
+      - 8080:8080
     depends_on:
       - mongo
+      - eureka
